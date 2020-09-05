@@ -1,0 +1,70 @@
+#include<iostream>
+using namespace std ;
+
+struct ListNode
+{
+	ListNode* next ;
+	int value ;
+};
+
+void print( ListNode* list )
+{
+	while( list != nullptr )
+	{
+		cout << list->value << ' ' ;
+		list = list->next ; 
+	}
+}
+
+ListNode* MergeSort ( ListNode* list_a , ListNode* list_b )
+{
+	if( list_a==nullptr && list_b==nullptr )
+	    return nullptr ;
+	else if( list_a==nullptr )
+	{
+		print( list_b ) ;
+		return list_b ;
+	}
+	else if( list_b==nullptr )
+	{
+		print( list_a ) ;
+		return list_a ;
+	}
+	if( list_a->value > list_b->value )
+	{
+		ListNode* temp = list_a ;
+		list_a = list_b ;
+		list_b = temp ;
+	}
+	ListNode* ans = list_a ;
+
+	while( list_a->next!=nullptr )
+	{
+		if( list_a->next->value <= list_b->value )
+		{
+			list_a = list_a->next ;
+		}
+		else
+		{
+			ListNode* temp = list_a->next ;
+			list_a->next = list_b ;
+			list_b = temp ;
+		}
+	}
+	list_a->next = list_b ;
+	print( ans ) ;
+	return ans;
+}
+
+int main()
+{
+	ListNode a1 , a2 , a3 , b1 , b2 , b3 ;
+	a1.value = 1 , a1.next = &a2 ;
+	a2.value = 2 , a2.next = &a3 ;
+	a3.value = 4 , a3.next = nullptr ;
+	b1.value = 1 , b1.next = &b2 ;
+	b2.value = 3 , b2.next = &b3 ;
+	b3.value = 4 , b3.next = nullptr ;
+	ListNode* ans = MergeSort( &a1 , &b1 ) ;
+	return 0 ;
+}
